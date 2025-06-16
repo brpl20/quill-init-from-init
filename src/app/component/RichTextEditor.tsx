@@ -10,6 +10,7 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css"; // Import Quill styles
 import AutoFormat from "./AutoFormat";
 import ClausulaRule from "./ClausulaRule";
+import { registerClausulaBlot } from "./ClausulaBlot";
 
 // Define the ref type for the RichTextEditor component
 export type RichTextEditorHandle = {
@@ -29,6 +30,12 @@ const RichTextEditor = forwardRef<RichTextEditorHandle>((_, ref) => {
   useEffect(() => {
     if (editorRef.current && typeof window !== "undefined") {
       try {
+        // Register custom blot before creating Quill instance
+        registerClausulaBlot();
+
+        // Register the clausula format
+        Quill.register("formats/clausula", true);
+
         quillRef.current = new Quill(editorRef.current, {
           theme: "snow",
           modules: {
@@ -52,9 +59,13 @@ const RichTextEditor = forwardRef<RichTextEditorHandle>((_, ref) => {
         // Register the clausula rule if the module is available
         if (autoFormat && typeof autoFormat.registerRule === "function") {
           autoFormat.registerRule(ClausulaRule);
+          console.log("ClausulaRule registered with AutoFormat module");
         } else {
           console.warn("AutoFormat module not properly initialized");
         }
+
+        // Log that custom format is registered
+        console.log("Custom clausula format registered");
       } catch (error) {
         console.error("Error initializing Quill editor:", error);
       }

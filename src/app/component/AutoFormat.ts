@@ -68,6 +68,10 @@ export default class AutoFormat {
         if (processed) {
           // If a rule processed the delta, we can stop processing
           // This allows rules to be prioritized by their order in the array
+
+          // After processing, we need to ensure the document is updated with all attributes
+          // This is particularly important for custom attributes like clausulaIndex
+          this.quill.update("api");
           break;
         }
       } catch (error) {
