@@ -6,11 +6,16 @@ const RichTextEditor = dynamic(() => import("@/app/component/RichTextEditor"), {
   ssr: false,
 });
 
+const MultiPageEditor = dynamic(() => import("@/app/component/MultiPageEditor"), {
+  ssr: false,
+});
+
 // Define the RichTextEditorHandle type
 type RichTextEditorHandle = {
   getContent: () => string;
   getDelta: () => any; // Changed from JSON to any
 };
+
 
 // Helper function to highlight clausula attributes in the delta
 const highlightClausulaAttributes = (delta: any) => {
@@ -113,6 +118,14 @@ export default function Home() {
           ) : (
             <p>No texts with clausula attribute found</p>
           )}
+        </div>
+      </div>
+
+      {/* Multi-Page Editor Section */}
+      <div className="mt-8 border-t pt-8">
+        <h1 className="text-center font-bold my-5 text-xl">Multi-Page Editor</h1>
+        <div className="h-screen">
+          <MultiPageEditor />
         </div>
       </div>
     </div>
